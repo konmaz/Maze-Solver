@@ -1,1 +1,2 @@
-# Maze-Solver
+![Logo](images/logo.png)
+`TODO : ADD README`
