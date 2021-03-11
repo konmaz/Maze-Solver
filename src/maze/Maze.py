@@ -19,7 +19,7 @@ def color(RGB) -> int:
 
 
 def readImage2Array():
-    im = Image.open('in.png').convert('RGB')  # type: Image.Image
+    im = Image.open('imagesIO/in.png').convert('RGB')  # type: Image.Image
     ROWS, COLUMNS = im.size
 
     A = np.zeros((COLUMNS, ROWS), dtype=int)
@@ -37,12 +37,11 @@ def readImage2Array():
 
 
 def plotMaze(A, path=[], steps=0):
-
     cmap = colors.ListedColormap(['white', 'black', 'green', 'red'])
 
     fig, ax = plt.subplots()
     ax.imshow(A, cmap=cmap)
-    plt.title("DFS")
+
     # Major ticks
     ax.set_xticks(np.arange(0, COLUMNS, 1))
     ax.set_yticks(np.arange(0, ROWS, 1))
@@ -60,18 +59,17 @@ def plotMaze(A, path=[], steps=0):
         verts = [(t[1], t[0]) for t in path]
 
         codes = [Path.MOVETO] + [Path.LINETO] * (len(verts) - 1)
-        print(codes)
 
         path2 = Path(verts, codes)
 
-        patch = patches.PathPatch(path2, facecolor='none', lw=2, edgecolor='yellow', zorder=3, )
+        patch = patches.PathPatch(path2, facecolor='none', lw=2, edgecolor='orange', zorder=3, )
         ax.add_patch(patch)
-        ax.text(0, ROWS+0.5, "Steps : %d\nNumber of Visited Nodes : %d" % (len(verts)-2, steps), color='red')
+        ax.text(0, ROWS + 0.5, "Steps : %d\nNumber of Visited Nodes : %d" % (len(verts) - 2, steps), color='red')
     else:
-        ax.text(0, ROWS+0.5, "Path Not Found!\nNumber of Visited Nodes : %d" % steps, color='red')
+        ax.text(0, ROWS + 0.5, "Path Not Found!\nNumber of Visited Nodes : %d" % steps, color='red')
 
-    # plt.savefig('out.png', bbox_inches='tight', dpi=300)
-    plt.show()
+    plt.savefig('imagesIO/out.png', bbox_inches='tight', dpi=300)
+    # plt.show()
 
 
 class Node(object):
@@ -153,8 +151,8 @@ def DepthFirstSearch(array, start, finish):
 
         if currentNode.data not in closedSet:  # Αν η κατάσταση ανήκει στο κλειστό σύνολο τότε πήγαινε στο while.
             counterVisited += 1
-            print("Visited : ", currentNode.data)
-            ala.append(currentNode.data)
+            # print("Visited : ", currentNode.data)
+
             if currentNode.data == finish:  # Αν η κατάσταση είναι μία από τις τελικές, τότε ανέφερε τη λύση
                 finishNode = currentNode
                 break  # Αν θέλεις και άλλες λύσεις πήγαινε στο βήμα 2. Αλλιώς σταμάτησε.
@@ -164,15 +162,15 @@ def DepthFirstSearch(array, start, finish):
                     currentNode.add_child(child)
                     searchFront.insert(0, child)  # Βάλε τις καταστάσεις-παιδιά στην αρχή του μετώπου της αναζήτησης.
             closedSet.add(currentNode.data)  # Βάλε την κατάσταση-γονέα στο κλειστό σύνολο.
-    print(ala)
+
     # backtracking
     if finishNode is None:
-        print("No Solution Found!")
-        return [],counterVisited
+        #print("No Solution Found!")
+        return [], counterVisited
     else:
         path = []
 
-        print("The solution is : ")
+        #print("The solution is : ")
         currentNode = finishNode
         while currentNode != rootNode:
             path.append(currentNode.data)
@@ -186,6 +184,6 @@ if __name__ == '__main__':
     A, START, FINISH = readImage2Array()
     ROWS = len(A)
     COLUMNS = len(A[0])
-    dfsPath, dfsSteps = DepthFirstSearch(A, START, FINISH)
+    dfsPath, dfsNumOfVisited = DepthFirstSearch(A, START, FINISH)
 
-    plotMaze(A, dfsPath, dfsSteps)
+    plotMaze(A, dfsPath, dfsNumOfVisited)

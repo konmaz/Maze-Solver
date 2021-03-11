@@ -1,5 +1,5 @@
 import unittest
-import Maze as mz
+from src.maze import Maze as mz
 import numpy as np
 
 
