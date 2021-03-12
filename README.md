@@ -29,13 +29,13 @@
 <br />
 <p align="center">
   <a href="https://github.com/konmaz/Maze-Solver">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="images/logo.png" alt="Maze Solver">
   </a>
 
   <h3 align="center">Solve mazes the easy way</h3>
+  
   <p align="center">
     <br />
-    <a href="https://github.com/konmaz/Maze-Solver">View Demo</a>
     ·
     <a href="https://github.com/konmaz/Maze-Solver/issues">Report Bug</a>
     ·
