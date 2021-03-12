@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib import colors
 from matplotlib.path import Path
 import matplotlib.patches as patches
+import sys
 
 
 def color(RGB) -> int:
@@ -18,8 +19,13 @@ def color(RGB) -> int:
         return 3  # Finish
 
 
-def readImage2Array():
-    im = Image.open('imagesIO/in.png').convert('RGB')  # type: Image.Image
+def readImage2Array(fileName):
+    try:
+        im = Image.open(fileName).convert('RGB')  # type: Image.Image
+    except FileNotFoundError:
+        print("Image with filename '%s' not found...\nExiting" % (fileName))
+        sys.exit(-1)
+
     ROWS, COLUMNS = im.size
 
     A = np.zeros((COLUMNS, ROWS), dtype=int)
@@ -68,7 +74,7 @@ def plotMaze(A, path=[], steps=0):
     else:
         ax.text(0, ROWS + 0.5, "Path Not Found!\nNumber of Visited Nodes : %d" % steps, color='red')
 
-    plt.savefig('imagesIO/out.png', bbox_inches='tight', dpi=300)
+    plt.savefig('out.png', bbox_inches='tight', dpi=300)
     # plt.show()
 
 
@@ -165,12 +171,12 @@ def DepthFirstSearch(array, start, finish):
 
     # backtracking
     if finishNode is None:
-        #print("No Solution Found!")
+        # print("No Solution Found!")
         return [], counterVisited
     else:
         path = []
 
-        #print("The solution is : ")
+        # print("The solution is : ")
         currentNode = finishNode
         while currentNode != rootNode:
             path.append(currentNode.data)
@@ -181,9 +187,23 @@ def DepthFirstSearch(array, start, finish):
 
 
 if __name__ == '__main__':
-    A, START, FINISH = readImage2Array()
+
+    if len(sys.argv) > 1: # If arguments are not given
+        fileName = sys.argv[1]
+    else:
+        print("No file name argument.")
+        fileName = 'in.png'  # use the default fileName
+
+    A, START, FINISH = readImage2Array(fileName)
+
     ROWS = len(A)
     COLUMNS = len(A[0])
+    print("Starting DFS... with (%dx%d) maze" % (ROWS, COLUMNS))
     dfsPath, dfsNumOfVisited = DepthFirstSearch(A, START, FINISH)
-
+    if len(dfsPath):
+        print("Solution Found!")
+        for item in dfsPath:
+            print("(%d, %d)" % item)
+    else:
+        print("Solution NOT Found!")
     plotMaze(A, dfsPath, dfsNumOfVisited)

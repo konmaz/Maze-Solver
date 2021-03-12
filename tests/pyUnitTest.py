@@ -1,11 +1,11 @@
 import unittest
-from src.maze import Maze as mz
+from src import Maze as mz
 import numpy as np
 
 
 class MyTestCase(unittest.TestCase):
 
-    def testValidStates(self):  # test extreme cases
+    def testValidStates(self):  # test extreme cases function
         A = np.array([[0, 0, 0, 1, 1, 1, 0, 0, 1, 1],
                       [0, 1, 0, 0, 1, 2, 0, 0, 0, 0],
                       [0, 1, 1, 1, 0, 0, 0, 1, 0, 0],
